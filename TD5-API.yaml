@@ -1,0 +1,189 @@
+openapi: 3.0.3
+info:
+  title: STD23013 - TD5
+  version: '1.0.3'
+servers:
+  - url: https://localhost.std23013.com
+paths:
+  '/customers':
+    put:
+      tags: 
+      - Customer
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Customer'
+        required: true
+      responses:
+        200:
+          description: Customer updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Customer'
+    patch:
+      tags:
+      - Customer
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CustomerPatch'
+        required: true
+      responses:
+        200:
+          description: Customer partially updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Customer'
+  '/customers/{customerId}/orders':
+    get:
+      tags: 
+      - Order
+      parameters:
+        - in: path
+          name: customerId
+          schema:
+            type: string
+          required: true
+        - in: query
+          name: page
+          schema:
+            type: integer
+          required: false
+        - in: query
+          name: pageSize
+          schema:
+            type: integer
+          required: false
+      responses:
+        200:
+          description: List of orders for the customer
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Order'
+    post:
+      tags: 
+      - Order
+      parameters:
+        - in: path
+          name: customerId
+          schema:
+            type: string
+          required: true
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Order'
+        required: true
+      responses:
+        201:
+          description: Order created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Order'
+    put:
+      tags: 
+      - Order
+      parameters:
+        - in: path
+          name: customerId
+          schema:
+            type: string
+          required: true
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Order'
+        required: true
+      responses:
+        200:
+          description: Order updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Order'
+  '/orders/{orderId}':
+    get:
+      tags:
+      - Order
+      parameters:
+        - in: path
+          name: orderId
+          schema:
+            type: string
+          required: true
+      responses:
+        200:
+          description: Order details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Order'
+components:
+  schemas:
+    Meal:
+      type: object
+      properties:
+        name: 
+          type: string
+        price: 
+          type: number
+          format: decimal
+        quantity:
+          type: integer
+      required:
+        - name
+        - price
+        - quantity
+    Customer:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        age:
+          type: integer
+      required:
+        - id
+        - name
+        - age
+    CustomerPatch:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        age:
+          type: integer
+      required:
+        - id
+    Order:
+      type: object
+      properties:
+        reference:
+          type: string
+        meals:
+          type: array
+          items:
+            $ref: '#/components/schemas/Meal'
+        orderDatetime:
+          type: string
+          format: date-time
+        id:
+          type: string
+      required:
+        - reference
+        - meals
+        - orderDatetime
+        - id
