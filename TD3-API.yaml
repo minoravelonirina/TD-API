@@ -1,0 +1,117 @@
+openapi: 3.0.3
+info:
+  title: STD23013 - TD3
+  version: '1.0.3'
+servers:
+  - url: https://localhost.std23013.com
+paths:
+  '/meal':
+    get:
+      tags: 
+      - User
+      parameters:
+        - in: query
+          name: page
+          schema:
+            type: integer
+          required: true
+        - in: query
+          name: pageSize
+          schema:
+            type: integer
+          required: true
+      responses:
+        200:
+          description: List of meal
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Meal'
+    post:
+      tags: 
+      - User
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '#/components/schemas/AddMeal'
+        required: true
+      responses:
+        200:
+          description: List of the meal added
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Meal'
+    put:
+      tags: 
+      - User
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '#/components/schemas/Meal'
+        required: true
+      responses:
+        200:
+          description: List of updated meal
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Meal'
+    delete:
+      tags: 
+      - User
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '#/components/schemas/MealIdentifier'
+        required: true
+      responses:
+        200:
+          description: List of deleted meal
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Meal'
+
+components:
+  schemas:
+    Meal:
+      type: object
+      properties:
+        name: 
+          type: string
+        price: 
+          type: number
+          format: decimal
+      allOf:
+        - $ref: '#/components/schemas/MealIdentifier'
+        - $ref: '#/components/schemas/AddMeal'
+    MealIdentifier:
+      type: object
+      properties:
+        id:
+          type: string
+    AddMeal:
+      type: object
+      properties:
+        name:
+          type: string
+        age:
+          type: integer
